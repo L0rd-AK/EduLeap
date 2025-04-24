@@ -5,7 +5,6 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// ADD YOUR OWN FIREBASE CREDENTIALS HERE
 const firebaseConfig = {
   apiKey: "",
   authDomain: "",
@@ -20,3 +19,4 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const googleAuthProvider = new GoogleAuthProvider();
+
