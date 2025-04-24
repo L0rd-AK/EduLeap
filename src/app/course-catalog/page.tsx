@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast"; // Import useToast
+import Link from 'next/link';
 
 interface Course {
   id: number;
@@ -159,6 +160,9 @@ export default function CourseCatalogPage() {
                       </div>
                   </div>
                   <p><strong className="font-semibold">Status:</strong> {course.enrollmentStatus}</p>
+                  <Link href={`/courses/${course.id}`}>
+                    View Details
+                  </Link>
                 </CardContent>
                 <CardFooter className="pt-4">
                   <Button
