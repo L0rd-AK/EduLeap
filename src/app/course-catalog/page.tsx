@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import React, { useState } from 'react';
-import { useToast } from "@/hooks/use-toast"; // Import useToast
+import { useToast } from "@/hooks/use-toast";
 import Link from 'next/link';
 
 interface Course {
@@ -15,10 +15,21 @@ interface Course {
   category: string;
   duration: string;
   fees: number;
+  description: string;
   skills: string[];
   enrollmentStatus: string;
+  instructor: string;
+  startDate: string;
+  modules: {
+    title: string;
+    description: string;
+    duration: string;
+  }[];
+  milestones: string[];
+  studentsEnrolled: number;
 }
 
+// Updated course data to match the course details page structure
 const courses: Course[] = [
   {
     id: 1,
@@ -26,8 +37,34 @@ const courses: Course[] = [
     category: "IT",
     duration: "12 weeks",
     fees: 1200,
-    skills: ["HTML", "CSS", "JavaScript"],
+    description: "This comprehensive course covers all aspects of modern web development, from HTML and CSS fundamentals to advanced JavaScript frameworks.",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Responsive Design"],
     enrollmentStatus: "Open",
+    instructor: "Dr. Sarah Johnson",
+    startDate: "2024-09-01",
+    modules: [
+      {
+        title: "HTML & CSS Fundamentals",
+        description: "Learn the building blocks of web pages and styling",
+        duration: "3 weeks"
+      },
+      {
+        title: "JavaScript Essentials",
+        description: "Master programming concepts and DOM manipulation",
+        duration: "4 weeks"
+      },
+      {
+        title: "Frontend Frameworks",
+        description: "Build applications with modern frameworks like React",
+        duration: "5 weeks"
+      }
+    ],
+    milestones: [
+      "Build a responsive portfolio website",
+      "Create an interactive web application",
+      "Develop a full-stack project with API integration"
+    ],
+    studentsEnrolled: 128
   },
   {
     id: 2,
@@ -35,8 +72,34 @@ const courses: Course[] = [
     category: "Healthcare",
     duration: "6 weeks",
     fees: 800,
-    skills: ["Patient Care", "Medical Terminology"],
+    description: "Prepare for a rewarding career in healthcare with our comprehensive CNA training program.",
+    skills: ["Patient Care", "Medical Terminology", "Vital Signs", "Infection Control"],
     enrollmentStatus: "Open",
+    instructor: "Prof. Michael Chen",
+    startDate: "2024-08-15",
+    modules: [
+      {
+        title: "Basic Healthcare Concepts",
+        description: "Introduction to healthcare principles and patient rights",
+        duration: "1 week"
+      },
+      {
+        title: "Clinical Skills",
+        description: "Hands-on training in essential nursing assistant skills",
+        duration: "3 weeks"
+      },
+      {
+        title: "Clinical Practicum",
+        description: "Supervised experience in healthcare settings",
+        duration: "2 weeks"
+      }
+    ],
+    milestones: [
+      "Pass the skills assessment exam",
+      "Complete 40 hours of clinical practice",
+      "Achieve certification readiness"
+    ],
+    studentsEnrolled: 64
   },
   {
     id: 3,
@@ -44,8 +107,34 @@ const courses: Course[] = [
     category: "Trades",
     duration: "24 weeks",
     fees: 2500,
-    skills: ["Electrical Systems", "Wiring"],
+    description: "Become a skilled electrician through our comprehensive training program.",
+    skills: ["Electrical Systems", "Wiring", "Circuit Design", "Safety Protocols"],
     enrollmentStatus: "Open",
+    instructor: "Robert Martinez",
+    startDate: "2024-10-01",
+    modules: [
+      {
+        title: "Electrical Theory",
+        description: "Understanding electricity, circuits, and components",
+        duration: "6 weeks"
+      },
+      {
+        title: "Residential Wiring",
+        description: "Installation techniques for homes and apartments",
+        duration: "8 weeks"
+      },
+      {
+        title: "Commercial Applications",
+        description: "Advanced systems for business environments",
+        duration: "10 weeks"
+      }
+    ],
+    milestones: [
+      "Complete basic circuit design project",
+      "Pass residential wiring assessment",
+      "Achieve journeyman-level skills evaluation"
+    ],
+    studentsEnrolled: 42
   },
   {
     id: 4,
@@ -53,13 +142,39 @@ const courses: Course[] = [
     category: "IT",
     duration: "16 weeks",
     fees: 1800,
-    skills: ["Python", "Machine Learning", "SQL"],
+    description: "Learn to analyze and interpret complex data using statistical methods and programming.",
+    skills: ["Python", "Machine Learning", "SQL", "Data Visualization"],
     enrollmentStatus: "Open",
-  },
+    instructor: "Dr. Emily Rodriguez",
+    startDate: "2024-09-15",
+    modules: [
+      {
+        title: "Python Programming",
+        description: "Fundamentals of Python for data analysis",
+        duration: "4 weeks"
+      },
+      {
+        title: "Statistical Analysis",
+        description: "Statistical methods and their applications",
+        duration: "5 weeks"
+      },
+      {
+        title: "Machine Learning",
+        description: "Building predictive models with ML algorithms",
+        duration: "7 weeks"
+      }
+    ],
+    milestones: [
+      "Complete data analysis project",
+      "Build a machine learning model",
+      "Create a data visualization dashboard"
+    ],
+    studentsEnrolled: 95
+  }
 ];
 
 export default function CourseCatalogPage() {
-  const { toast } = useToast(); // Initialize toast
+  const { toast } = useToast();
   // Placeholder state for search, filters, and sorting
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -77,14 +192,14 @@ export default function CourseCatalogPage() {
     } else if (sortOrder === 'price-desc') {
       return b.fees - a.fees;
     } else if (sortOrder === 'duration-asc') {
-        // Simple string comparison, could be improved by parsing duration
-        const durationA = parseInt(a.duration.split(' ')[0]);
-        const durationB = parseInt(b.duration.split(' ')[0]);
-        return durationA - durationB;
+      // Simple string comparison, could be improved by parsing duration
+      const durationA = parseInt(a.duration.split(' ')[0]);
+      const durationB = parseInt(b.duration.split(' ')[0]);
+      return durationA - durationB;
     } else if (sortOrder === 'duration-desc') {
-         const durationA = parseInt(a.duration.split(' ')[0]);
-        const durationB = parseInt(b.duration.split(' ')[0]);
-        return durationB - durationA;
+      const durationA = parseInt(a.duration.split(' ')[0]);
+      const durationB = parseInt(b.duration.split(' ')[0]);
+      return durationB - durationA;
     }
     return 0;
   });
@@ -133,52 +248,70 @@ export default function CourseCatalogPage() {
             <SelectContent className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
               <SelectItem value="price-asc">Price: Low to High</SelectItem>
               <SelectItem value="price-desc">Price: High to Low</SelectItem>
-              <SelectItem value="duration-asc">Duration: Short to Long</SelectItem>
-              <SelectItem value="duration-desc">Duration: Long to Short</SelectItem>
+              <SelectItem value="duration-asc">Duration: Shortest First</SelectItem>
+              <SelectItem value="duration-desc">Duration: Longest First</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredAndSortedCourses.map((course) => {
-            const currentButtonStatus = buttonStatus[course.id] || 'Apply';
-            return (
-              <Card key={course.id} className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700 flex flex-col">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-xl font-bold text-blue-800 dark:text-blue-200">{course.title}</CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-gray-400">{course.category}</CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-2 text-gray-700 dark:text-gray-300 flex-grow">
-                  <p><strong className="font-semibold">Duration:</strong> {course.duration}</p>
-                  <p><strong className="font-semibold">Fees:</strong> <span className="text-green-600 dark:text-green-400">${course.fees}</span></p>
-                  <div>
-                      <strong className="font-semibold">Skills:</strong>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                          {course.skills.map((skill, skillIndex) => (
-                              <Badge key={skillIndex} variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100">{skill}</Badge>
-                          ))}
-                      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredAndSortedCourses.map((course) => (
+            <Card key={course.id} className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+              <Link href={`/course-details?courseId=${course.id}`} className="block">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-100">{course.title}</CardTitle>
+                    <Badge variant="outline" className={course.enrollmentStatus === 'Open' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100'}>
+                      {course.enrollmentStatus}
+                    </Badge>
                   </div>
-                  <p><strong className="font-semibold">Status:</strong> {course.enrollmentStatus}</p>
-                  <Link href={`/courses/${course.id}`}>
-                    View Details
-                  </Link>
+                  <CardDescription className="text-gray-600 dark:text-gray-400">
+                    {course.category}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="text-gray-700 dark:text-gray-300">
+                      <span className="font-medium">Duration:</span> {course.duration}
+                    </div>
+                    <div className="text-gray-700 dark:text-gray-300">
+                      <span className="font-medium">Fee:</span> ${course.fees}
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Skills Covered:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {course.skills.slice(0, 3).map((skill, index) => (
+                        <Badge key={index} variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                          {skill}
+                        </Badge>
+                      ))}
+                      {course.skills.length > 3 && (
+                        <Badge variant="secondary" className="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                          +{course.skills.length - 3} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {course.description}
+                  </div>
                 </CardContent>
-                <CardFooter className="pt-4">
-                  <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                    onClick={() => handleApplyForLoan(course.id)}
-                    disabled={currentButtonStatus !== 'Apply'}
-                  >
-                    {currentButtonStatus === 'Pending' ? 'Pending' : 'Apply for Loan'}
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+              </Link>
+              <CardFooter className="pt-0">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => handleApplyForLoan(course.id)}
+                  disabled={buttonStatus[course.id] === 'Pending'}
+                >
+                  {buttonStatus[course.id] === 'Pending' ? 'Application Pending' : 'Apply for Loan'}
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
-      
     </div>
   );
 }
