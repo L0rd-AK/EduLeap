@@ -251,7 +251,7 @@ export default function Navbar() {
                 <Link href="/login">
                   <Button variant="ghost">Log in</Button>
                 </Link>
-                <Link href="/student-registration">
+                <Link href="/signup">
                   <Button>Sign up</Button>
                 </Link>
               </div>
