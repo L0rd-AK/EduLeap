@@ -75,8 +75,8 @@ export default function Navbar() {
 
   const studentNavItems = [
     { name: 'Dashboard', href: '/student-dashboard', icon: <LayoutDashboard className="h-5 w-5" /> },
-    { name: 'My Courses', href: '/student/courses', icon: <BookOpen className="h-5 w-5" /> },
-    { name: 'My Loans', href: '/student/loans', icon: <CreditCard className="h-5 w-5" /> },
+    { name: 'My Courses', href: '/student/my-courses', icon: <BookOpen className="h-5 w-5" /> },
+    { name: 'My Loans', href: '/student/my-loans', icon: <CreditCard className="h-5 w-5" /> },
     { name: 'Graduation', href: '/student/graduation', icon: <GraduationCap className="h-5 w-5" /> },
     { name: 'Support', href: '/student/support', icon: <MessageSquare className="h-5 w-5" /> },
   ];
@@ -233,7 +233,7 @@ export default function Navbar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                    <a href='/student/profile'><span>Profile</span></a>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
