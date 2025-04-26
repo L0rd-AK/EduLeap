@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -145,7 +145,8 @@ const getCourse = async (id: string): Promise<Course | undefined> => {
   return courses.find(course => course.id === parseInt(id));
 };
 
-export default function CourseDetailsPage() {
+// Component that uses useSearchParams
+function CourseDetailsContent() {
   const searchParams = useSearchParams();
   const courseId = searchParams.get('courseId');
   
@@ -378,5 +379,18 @@ export default function CourseDetailsPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function CourseDetailsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    }>
+      <CourseDetailsContent />
+    </Suspense>
   );
 }
