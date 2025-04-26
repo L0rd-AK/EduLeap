@@ -19,7 +19,12 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // Redirect to a logged-in page, e.g., the student dashboard
-      window.location.href = '/student-dashboard';
+      if (email?.includes('admin')) {
+        window.location.href = '/admin/dashboard';
+      } else {
+        window.location.href = '/student-dashboard';
+      }
+      
     } catch (err: any) {
       setError(err.message);
     }
